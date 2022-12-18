@@ -1,3 +1,3 @@
-# xbash
+# xbashio
 
-xbash is a bash function library for commonly uses operations.
+xbashio is a bash function library for commonly uses operations.

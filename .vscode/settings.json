@@ -1,0 +1,7 @@
+{
+    "licenser.author": "Roland Breitschaft",
+    "licenser.license": "MIT",
+    "shellcheck.customArgs": [
+        "--external-sources"
+    ]
+}
