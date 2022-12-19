@@ -24,6 +24,8 @@ xbashio::apt.upgrade() {
 
     xbashio::log.info "Upgrade System"
 
+    export DEBIAN_FRONTEND=noninteractive
+
     xbashio::apt.update
     apt upgrade -qy --no-install-recommends || xbashio::exit.nok "System could not upgraded"
     return "${__XBASHIO_EXIT_OK}"
@@ -41,6 +43,8 @@ xbashio::apt.install() {
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
     xbashio::log.info "Install Package '${packages}' System"
+
+    export DEBIAN_FRONTEND=noninteractive
 
     # shellcheck disable=SC2086
     apt install -qy --no-install-recommends ${packages}  || xbashio::exit.nok "Packages '$packages' could not installed"
@@ -60,6 +64,8 @@ xbashio::apt.remove() {
 
     xbashio::log.info "Remove Package '${packages}' System"
 
+    export DEBIAN_FRONTEND=noninteractive
+
     # shellcheck disable=SC2086
     apt purge -qy --no-install-recommends ${packages} || xbashio::exit.nok "Packages 'packages' could not removed"
     return "${__XBASHIO_EXIT_OK}"
@@ -75,6 +81,8 @@ xbashio::apt.prepare() {
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
     xbashio::log.info "Install minimum Packages '${packages}' on System"
+
+    export DEBIAN_FRONTEND=noninteractive
 
     xbashio::apt.upgrade
 
@@ -92,6 +100,8 @@ xbashio::apt.clean() {
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
     xbashio::log.info "Cleanup the System"
+
+    export DEBIAN_FRONTEND=noninteractive
 
     (apt clean \
         && rm -rf \
