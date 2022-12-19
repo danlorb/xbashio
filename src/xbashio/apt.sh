@@ -6,8 +6,11 @@
 #
 # ------------------------------------------------------------------------------
 xbashio::apt.update() {
+
+    xbashio::log.trace "${FUNCNAME[0]}:"
+
     xbashio::log.info "Update Package Cache"
-    sudo apt update
+    apt update || xbashio::exit.nok "Package Cache could not updated"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -16,10 +19,13 @@ xbashio::apt.update() {
 #
 # ------------------------------------------------------------------------------
 xbashio::apt.upgrade() {
+
+    xbashio::log.trace "${FUNCNAME[0]}:"
+
     xbashio::log.info "Upgrade System"
 
     xbashio::apt.update
-    sudo apt upgrade -qy --no-install-recommends
+    apt upgrade -qy --no-install-recommends || xbashio::exit.nok "System could not upgraded"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -32,10 +38,12 @@ xbashio::apt.upgrade() {
 xbashio::apt.install() {
     local packages="$*"
 
+    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+
     xbashio::log.info "Install Package '${packages}' System"
 
     # shellcheck disable=SC2086
-    sudo apt install -qy --no-install-recommends ${packages}
+    apt install -qy --no-install-recommends ${packages}  || xbashio::exit.nok "Packages '$packages' could not installed"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -48,10 +56,12 @@ xbashio::apt.install() {
 xbashio::apt.remove() {
     local packages="$*"
 
+    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+
     xbashio::log.info "Remove Package '${packages}' System"
 
     # shellcheck disable=SC2086
-    sudo apt purge -qy --no-install-recommends ${packages}
+    apt purge -qy --no-install-recommends ${packages} || xbashio::exit.nok "Packages 'packages' could not removed"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -60,14 +70,16 @@ xbashio::apt.remove() {
 #
 # ------------------------------------------------------------------------------
 xbashio::apt.prepare() {
-    local packages="sudo nano apt-transport-https openssh-server openssl"
+    local packages="sudo nano apt-transport-https openssh-server openssl python3-pip"
+
+    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
     xbashio::log.info "Install minimum Packages '${packages}' on System"
 
     xbashio::apt.upgrade
 
     # shellcheck disable=SC2086
-    sudo apt install -qy --no-install-recommends ${packages}
+    apt install -qy --no-install-recommends ${packages} || xbashio::exit.nok "System could not prepared"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -77,12 +89,15 @@ xbashio::apt.prepare() {
 # ------------------------------------------------------------------------------
 xbashio::apt.clean() {
 
+    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+
     xbashio::log.info "Cleanup the System"
 
-    sudo apt clean \
-        && sudo rm -rf \
+    (apt clean \
+        && rm -rf \
             /var/lib/apt/lists/* \
-            /root/.cache
+            /root/.cache) \
+         || xbashio::exit.nok "System could not cleaned"
 
     return "${__XBASHIO_EXIT_OK}"
 }

@@ -15,7 +15,7 @@
 # xbashio::apt.install nano
 
 # Install Minimum needed Package
-# xbashio::apt.prepare nano
+# xbashio::apt.prepare
 
 # Cleanup the System
 # xbashio::apt.clean

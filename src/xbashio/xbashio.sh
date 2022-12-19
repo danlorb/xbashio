@@ -26,17 +26,25 @@ declare __XBASHIO_LOG_TIMESTAMP=${LOG_TIMESTAMP:-${__XBASHIO_DEFAULT_LOG_TIMESTA
 declare __XBASHIO_CACHE_DIR=${CACHE_DIR:-${__XBASHIO_DEFAULT_CACHE_DIR}}
 
 # ==============================================================================
-# MODULES
+# Main Modules
 # ==============================================================================
 # shellcheck source=/workspaces/xbashio/src/xbashio/color.sh
 source "${__XBASHIO_LIB_DIR}/color.sh"
+# shellcheck source=/workspaces/xbashio/src/xbashio/var.sh
+source "${__XBASHIO_LIB_DIR}/var.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/log.sh
 source "${__XBASHIO_LIB_DIR}/log.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/string.sh
 source "${__XBASHIO_LIB_DIR}/string.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/exit.sh
 source "${__XBASHIO_LIB_DIR}/exit.sh"
+
+# ==============================================================================
+# Other Modules
+# ==============================================================================
 # shellcheck source=/workspaces/xbashio/src/xbashio/apt.sh
 source "${__XBASHIO_LIB_DIR}/apt.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/security.sh
 source "${__XBASHIO_LIB_DIR}/security.sh"
+# shellcheck source=/workspaces/xbashio/src/xbashio/ssh.sh
+source "${__XBASHIO_LIB_DIR}/ssh.sh"

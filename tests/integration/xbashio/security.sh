@@ -12,5 +12,11 @@ xbashio::log.level trace
 # xbashio::security.createPassword 16
 
 # Create User
-password=$(xbashio::security.createPassword 16)
-xbashio::security.createUser support "$password"
+# password=$(xbashio::security.createPassword 16)
+# xbashio::security.createUser support1 "$password"
+
+# Add User to Group
+# xbashio::security.addUserToGroup support1 sudo
+
+# Remove User from Group
+xbashio::security.removeUserFromGroup support1 sudo
