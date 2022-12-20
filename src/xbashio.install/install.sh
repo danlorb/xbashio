@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-version="0.4.0-beta"
+version="0.4.1-beta"
 file=xbashio-"${version}".tar.gz
 url="https://git.x-breitschaft.de/global/xbashio/archive/${version}.tar.gz"
 apt update && apt install -qy --no-install-recommends curl

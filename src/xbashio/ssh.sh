@@ -30,9 +30,7 @@ xbashio::ssh.createKey() {
     ssh-keygen -b $__XBASHIO_SSH_BITS -t $__XBASHIO_SSH_CRYPT -N "$passphrase" -C "$comment" -f "$file"
     mv "$file" "${file}${__XBASHIO_SSH_PRIVATE_KEY_EXT}"
 
-    cat > "/root/.xbashio"<< EOF
-Passphrase for ${context}=${passphrase}
-EOF
+    xbashio::security.writeSecurityLog "Passphrase for '${context}' is '${passphrase}'"
 
     xbashio::log.info "SSH key for Context/Machine '$context' created"
 
