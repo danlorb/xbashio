@@ -15,9 +15,9 @@ Include /etc/ssh/sshd_config.d/*.conf
 #ListenAddress 0.0.0.0
 #ListenAddress ::
 
-#HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_rsa_key
 #HostKey /etc/ssh/ssh_host_ecdsa_key
-#HostKey /etc/ssh/ssh_host_ed25519_key
+HostKey /etc/ssh/ssh_host_ed25519_key
 
 # Ciphers and keying
 #RekeyLimit default none
@@ -58,7 +58,7 @@ Include /etc/ssh/sshd_config.d/*.conf
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
-KbdInteractiveAuthentication no
+#KbdInteractiveAuthentication no
 
 # Kerberos options
 #KerberosAuthentication no
@@ -81,12 +81,12 @@ KbdInteractiveAuthentication no
 # If you just want the PAM account and session checks to run without
 # PAM authentication, then enable this but set PasswordAuthentication
 # and KbdInteractiveAuthentication to 'no'.
-UsePAM yes
+#UsePAM yes
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes
 #GatewayPorts no
-X11Forwarding yes
+#X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes

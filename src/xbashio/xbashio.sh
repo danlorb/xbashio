@@ -42,6 +42,8 @@ source "${__XBASHIO_LIB_DIR}/exit.sh"
 # ==============================================================================
 # Other Modules
 # ==============================================================================
+# shellcheck source=/workspaces/xbashio/src/xbashio/trash.sh
+source "${__XBASHIO_LIB_DIR}/trash.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/apt.sh
 source "${__XBASHIO_LIB_DIR}/apt.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/security.sh

@@ -54,9 +54,7 @@ xbashio::security.createUser() {
         xbashio::log.trace "Create a new User with ID '$id' ..."
         useradd -s /bin/bash -u $id -g $id -p "${encryptedPassword}" -m "${user}" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not created"
 
-        cat > "/root/.xbashio"<< EOF
-${user}=${password}
-EOF
+        xbashio::security.writeSecurityLog "User '${user}' created with '${password}'"
 
         xbashio::log.info "User '$user' and Group created."
     else
@@ -86,6 +84,8 @@ xbashio::security.deleteUser() {
     user_exists=$(getent passwd "${user}" || true)
     if xbashio::var.has_value "${user_exists}"; then
         userdel -f "$user" >/dev/null 2>&1 || xbashio::exit:nok "User '$user' could not removed"
+
+        xbashio::security.writeSecurityLog "User '${user}' deleted"
     else
         xbashio::log.info "User '$user' not exists"
     fi
@@ -113,6 +113,8 @@ xbashio::security.deleteGroup() {
     group_exists=$(getent group "${group}" || true)
     if xbashio::var.has_value "${group_exists}"; then
         groupdel "$group" >/dev/null 2>&1 || xbashio::exit:nok "Group '$group' could not removed"
+
+        xbashio::security.writeSecurityLog "Group '${group}' deleted"
     else
         xbashio::log.info "Group '$group' not exists"
     fi
@@ -145,9 +147,11 @@ xbashio::security.addUserToGroup() {
         return "${__XBASHIO_EXIT_NOK}"
     fi
 
-    user_already_added=$(getent group "$group" | grep -i "$user")
+    user_already_added=$(getent group "$group" | grep -i "$user" || true)
     if ! xbashio::var.has_value "$user_already_added"; then
         usermod -aG "$group" "$user" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not added to Group '$group'"
+
+        xbashio::security.writeSecurityLog "User '${user}' added to Group '${group}'"
     else
         xbashio::log.info "User '$user' already added to Group '$group'"
     fi
@@ -180,7 +184,13 @@ xbashio::security.removeUserFromGroup() {
         return "${__XBASHIO_EXIT_NOK}"
     fi
 
-    gpasswd -d "$user" "$group" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not removed from Group"
+    user_exists=$(getent group "$group" | grep -i "$user" || true)
+    if xbashio::var.has_value "$user_exists"; then
+        gpasswd -d "$user" "$group" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not removed from Group"
+        xbashio::security.writeSecurityLog "User '${user}' removed from Group '${group}'"
+    else
+        xbashio::log.info "User '$user' already removed from Group '$group'"
+    fi
 
     return "${__XBASHIO_EXIT_OK}"
 }
@@ -234,9 +244,7 @@ xbashio::security.disableRoot() {
     password=$(xbashio::security.createPassword 24)
     xbashio::security.changePassword root "$password"
 
-    cat > "/root/.xbashio"<< EOF
-root=${password}
-EOF
+    xbashio::security.writeSecurityLog "User 'root' disabled. New password is '${password}'"
 }
 
 # ------------------------------------------------------------------------------
@@ -274,4 +282,31 @@ xbashio::security.changePassword() {
     fi
 
     return "${__XBASHIO_EXIT_OK}"
+}
+
+# ------------------------------------------------------------------------------
+# Writes Security Infos to a File
+#
+# Arguments:
+#   $1 The info
+# ------------------------------------------------------------------------------
+xbashio::security.writeSecurityLog(){
+    local item="${1:-}"
+
+    if xbashio::var.has_value "$item"; then
+        cat >> "/root/.xbashio_security" << EOF
+$(date +'%Y%m%d_%H%M%S') $item
+EOF
+    fi
+
+    return "${__XBASHIO_EXIT_OK}"
+}
+
+# ------------------------------------------------------------------------------
+# Remove Grabage Files
+#
+# ------------------------------------------------------------------------------
+xbashio::security.clean(){
+
+    rm -f /root/.xbashio_security
 }
