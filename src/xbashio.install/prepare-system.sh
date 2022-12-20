@@ -4,7 +4,7 @@
 user="support"
 
 # Set Log Level
-xbashio::log.level info
+xbashio::log.level trace
 
 xbashio::log.info "Prepare the System"
 xbashio::apt.prepare

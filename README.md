@@ -19,7 +19,7 @@ curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.
 To activate **SSH** and harden your System call the script
 
 ```bash
-curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.install/prepare-system.sh | bash
+curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.install/prepare.sh | bash
 ```
 
 This will install and configure

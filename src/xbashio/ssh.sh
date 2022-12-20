@@ -25,9 +25,16 @@ xbashio::ssh.createKey() {
 
     file=$(xbashio::ssh.createFileName "$context")
     comment="Generated_for_${context}_from_$(whoami)_on_$(hostname)_at_$(date +'%Y%m%d_%H%M%S')"
+    passphrase=$(xbashio::security.createPassword 64)
 
-    ssh-keygen -b $__XBASHIO_SSH_BITS -t $__XBASHIO_SSH_CRYPT -N "" -C "${comment}" -f "${file}"
+    ssh-keygen -b $__XBASHIO_SSH_BITS -t $__XBASHIO_SSH_CRYPT -N "$passphrase" -C "$comment" -f "$file"
     mv "$file" "${file}${__XBASHIO_SSH_PRIVATE_KEY_EXT}"
+
+    cat > "/root/.xbashio"<< EOF
+Passphrase for ${context}=${passphrase}
+EOF
+
+    xbashio::log.info "SSH key for Context/Machine '$context' created"
 
     return "${__XBASHIO_EXIT_OK}"
 }
@@ -68,6 +75,10 @@ xbashio::ssh.installKey() {
     chmod -R 700 "$dest"
     chmod 600 "$dest"/authorized_keys
     chown -R "$context":"$context" "$dest"
+
+    xbashio::log.info "SSH key for Context/Machine '$context' and User '$user' installed"
+
+    return "${__XBASHIO_EXIT_OK}"
 }
 
 xbashio::ssh.createFileName() {
