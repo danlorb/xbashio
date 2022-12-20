@@ -46,11 +46,17 @@ xbashio::security.createUser() {
         xbashio::log.trace "Increment User Id '$id' ..."
         id=$((id + 1))
 
+        encryptedPassword=$(xbashio::security.encryptPassword "$password")
+
         xbashio::log.trace "Create an new Group with ID '$id' ..."
-        groupadd -g $id -p "${password}" "${user}" > /dev/null 2>&1 || xbashio::exit.nok "Group '$user' could not created"
+        groupadd -g $id -p "${encryptedPassword}" "${user}" > /dev/null 2>&1 || xbashio::exit.nok "Group '$user' could not created"
 
         xbashio::log.trace "Create a new User with ID '$id' ..."
-        useradd -s /bin/bash -u $id -g $id -p "${password}" -m "${user}" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not created"
+        useradd -s /bin/bash -u $id -g $id -p "${encryptedPassword}" -m "${user}" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not created"
+
+        cat > "/root/.xbashio"<< EOF
+${user}=${password}
+EOF
 
         xbashio::log.info "User '$user' and Group created."
     else
@@ -139,7 +145,12 @@ xbashio::security.addUserToGroup() {
         return "${__XBASHIO_EXIT_NOK}"
     fi
 
-    usermod -aG "$group" "$user" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not added to Group '$group'"
+    user_already_added=$(getent group "$group" | grep -i "$user")
+    if ! xbashio::var.has_value "$user_already_added"; then
+        usermod -aG "$group" "$user" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not added to Group '$group'"
+    else
+        xbashio::log.info "User '$user' already added to Group '$group'"
+    fi
 
     return "${__XBASHIO_EXIT_OK}"
 }
@@ -175,7 +186,7 @@ xbashio::security.removeUserFromGroup() {
 }
 
 # ------------------------------------------------------------------------------
-# Creates a random Password
+# Creates a random unencrypted Password
 #
 # Arguments:
 #   $1 Length of the Password (default is 24)
@@ -186,26 +197,46 @@ xbashio::security.createPassword() {
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
-    xbashio::log.info "Create a encrypted, random Password"
+    xbashio::log.info "Create a random Password"
+    openssl rand -base64 "$length"
+}
 
-    password=$(xbashio::security.createPlainPassword "$length")
+# ------------------------------------------------------------------------------
+# Encrypt a given Password
+#
+# Arguments:
+#   $1 Password
+# ------------------------------------------------------------------------------
+xbashio::security.encryptPassword() {
+    local password="${1:-}"
+
+    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+
+    xbashio::log.info "Encrypt given Password"
+
+    if ! xbashio::var.has_value "$password"; then
+        xbashio::log.error "No Password given"
+        return "${__XBASHIO_EXIT_NOK}"
+    fi
+
     openssl passwd -1 "${password}"
 }
 
 # ------------------------------------------------------------------------------
-# Creates a random unencrypted Password
+# Disable Root User
 #
-# Arguments:
-#   $1 Length of the Password (default is 24)
 # ------------------------------------------------------------------------------
-# shellcheck disable=SC2120
-xbashio::security.createPlainPassword() {
-    local length="${1:-24}"
+xbashio::security.disableRoot() {
 
-    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+    xbashio::log.trace "${FUNCNAME[0]}:"
 
     xbashio::log.info "Create a random Password"
-    openssl rand -base64 "$length"
+    password=$(xbashio::security.createPassword 24)
+    xbashio::security.changePassword root "$password"
+
+    cat > "/root/.xbashio"<< EOF
+root=${password}
+EOF
 }
 
 # ------------------------------------------------------------------------------
@@ -213,13 +244,13 @@ xbashio::security.createPlainPassword() {
 #
 # Arguments:
 #   $1 User where the Password should changed
-#   $2 Old Password
-#   $3 New Password
+#   $2 New Password
+#   $3 Old Password
 # ------------------------------------------------------------------------------
 xbashio::security.changePassword() {
     local user="${1:-}"
-    local oldpassword="${1:-}"
-    local newpassword="${1:-}"
+    local newpassword="${2:-}"
+    local oldpassword="${3:-}"
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$user"
 
@@ -230,17 +261,17 @@ xbashio::security.changePassword() {
         return "${__XBASHIO_EXIT_NOK}"
     fi
 
-    if ! xbashio::var.has_value "$oldpassword"; then
-        xbashio::log.error "Old Password is missing"
-        return "${__XBASHIO_EXIT_NOK}"
-    fi
-
     if ! xbashio::var.has_value "$newpassword"; then
         xbashio::log.error "New Password is missing"
         return "${__XBASHIO_EXIT_NOK}"
     fi
 
-    (echo -e "${oldpassword}\n${newpassword}\n${newpassword}" | passwd "$user") || xbashio::exit.nok "Password for User '$user' could not changed"
+    xbashio::log.info "Change Password for User '$user'"
+    if xbashio::var.has_value "$oldpassword"; then
+        (echo -e "${oldpassword}\n${newpassword}\n${newpassword}" | passwd "$user") || xbashio::exit.nok "Password for User '$user' could not changed"
+    else
+        (echo -e "${newpassword}\n${newpassword}" | passwd "$user") || xbashio::exit.nok "Password for User '$user' could not changed"
+    fi
 
     return "${__XBASHIO_EXIT_OK}"
 }

@@ -14,7 +14,7 @@
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [],
     // Use 'postCreateCommand' to run commands after the container is created.
-    // "postCreateCommand": "uname -a",
+    "postCreateCommand": "ln -s /workspaces/xbashio/src/xbashio /usr/lib/xbashio && ln -s /workspaces/xbashio/src/xbashio/xbashio /usr/bin/xbashio && chmod +x /workspaces/xbashio/src/xbashio/*",
     // Configure tool-specific properties.
     "customizations": {
         "vscode": {
@@ -42,7 +42,7 @@
                 "emmanuelbeziat.vscode-great-icons"
             ]
         }
-    }
+    },
     // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-    // "remoteUser": "root"
+    "remoteUser": "root"
 }

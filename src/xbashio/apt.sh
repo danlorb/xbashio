@@ -76,7 +76,7 @@ xbashio::apt.remove() {
 #
 # ------------------------------------------------------------------------------
 xbashio::apt.prepare() {
-    local packages="sudo nano apt-transport-https openssh-server openssl python3-pip"
+    local packages="sudo nano apt-transport-https openssh-server openssl"
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
