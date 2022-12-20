@@ -7,7 +7,7 @@
 Copy follow link in your terminal an execute it
 
 ```bash
-curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.install/install.sh | bash
+curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.scripts/install.sh | bash
 ```
 
 > **Attention**
@@ -19,7 +19,7 @@ curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.
 To activate **SSH** and harden your System call the script
 
 ```bash
-curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.install/prepare.sh | bash
+curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.scripts/prepare.sh | bash
 ```
 
 This will install and configure
