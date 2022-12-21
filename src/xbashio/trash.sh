@@ -7,10 +7,13 @@
 # ------------------------------------------------------------------------------
 function xbashio::trash.clean() {
 
-    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+    xbashio::log.trace "${FUNCNAME[0]}:"
 
+    xbashio::log.info "Cleanup System"
     xbashio::security.clean
     xbashio::ssh.clean
+
+    xbashio::log.info "System cleaned."
 
     return "${__XBASHIO_EXIT_OK}"
 }

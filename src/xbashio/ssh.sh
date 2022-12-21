@@ -27,10 +27,10 @@ xbashio::ssh.createKey() {
     comment="Generated_for_${context}_from_$(whoami)_on_$(hostname)_at_$(date +'%Y%m%d_%H%M%S')"
     passphrase=$(xbashio::security.createPassword 64)
 
-    ssh-keygen -b $__XBASHIO_SSH_BITS -t $__XBASHIO_SSH_CRYPT -N "$passphrase" -C "$comment" -f "$file"
+    ssh-keygen -b "$__XBASHIO_SSH_BITS" -t "$__XBASHIO_SSH_CRYPT" -N "$passphrase" -C "$comment" -f "$file"
     mv "$file" "${file}${__XBASHIO_SSH_PRIVATE_KEY_EXT}"
 
-    xbashio::security.writeSecurityLog "Passphrase for '${context}' is '${passphrase}'"
+    xbashio::security.writeSecurityLog "Passphrase for Context/Machine '${context}' is '${passphrase}'"
 
     xbashio::log.info "SSH key for Context/Machine '$context' created"
 
@@ -160,7 +160,12 @@ EOF
 # ------------------------------------------------------------------------------
 xbashio::ssh.defaultConfig() {
 
+    xbashio::log.trace "${FUNCNAME[0]}:"
+
+    xbashio::log.info "Create default ssh config file"
+
     port=$(shuf -i 2000-65000 -n 1)
+
 
     cat > "/etc/sshd_config"<<EOF
 # This is the sshd server system-wide configuration file.  See
@@ -286,6 +291,8 @@ Subsystem       sftp    /usr/lib/openssh/sftp-server
 #       ForceCommand cvs server
 EOF
 
+    xbashio::log.info "Default ssh config file created"
+
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -295,6 +302,11 @@ EOF
 # ------------------------------------------------------------------------------
 xbashio::ssh.clean(){
 
+    xbashio::log.trace "${FUNCNAME[0]}:" "$@"
+
+    xbashio::log.info "Cleanup SSH Keys"
     rm -f /root/*.key
     rm -f /root/*.pub
+
+    xbashio::log.info "SSH Keys deleted"
 }

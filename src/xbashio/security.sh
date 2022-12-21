@@ -293,9 +293,11 @@ xbashio::security.changePassword() {
 xbashio::security.writeSecurityLog(){
     local item="${1:-}"
 
-    if xbashio::var.has_value "$item"; then
-        cat >> "/root/.xbashio_security" << EOF
-$(date +'%Y%m%d_%H%M%S') $item
+    xbashio::log.trace "${FUNCNAME[0]}:"
+
+    if [ -n "$item" ]; then
+        cat >> "/root/.xbashio-security" << EOF
+$(date +'%Y%m%d_%H%M%S') -> $item
 EOF
     fi
 
@@ -307,6 +309,10 @@ EOF
 #
 # ------------------------------------------------------------------------------
 xbashio::security.clean(){
+
+    xbashio::log.trace "${FUNCNAME[0]}:"
+
+    xbashio::log.info "Cleanup Security Log"
 
     rm -f /root/.xbashio_security
 }
