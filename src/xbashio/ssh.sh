@@ -25,12 +25,17 @@ xbashio::ssh.createKey() {
 
     file=$(xbashio::ssh.createFileName "$context")
     comment="Generated_for_${context}_from_$(whoami)_on_$(hostname)_at_$(date +'%Y%m%d_%H%M%S')"
-    passphrase=$(xbashio::security.createPassword 64)
+    passphrase="$(xbashio::security.createPassword 64)"
+
+    if [ -f "$file" ]; then
+        xbashio::log.trace "Remove existing SSH Key File"
+        rm -f "$file"
+    fi
 
     ssh-keygen -b "$__XBASHIO_SSH_BITS" -t "$__XBASHIO_SSH_CRYPT" -N "$passphrase" -C "$comment" -f "$file"
     mv "$file" "${file}${__XBASHIO_SSH_PRIVATE_KEY_EXT}"
 
-    xbashio::security.writeSecurityLog "Passphrase for Context/Machine '${context}' is '${passphrase}'"
+    xbashio::security.writeSecurityLog "Passphrase for Context/Machine '${context}' is '$passphrase'"
 
     xbashio::log.info "SSH key for Context/Machine '$context' created"
 

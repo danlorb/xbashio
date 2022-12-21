@@ -49,12 +49,12 @@ xbashio::security.createUser() {
         encryptedPassword=$(xbashio::security.encryptPassword "$password")
 
         xbashio::log.trace "Create an new Group with ID '$id' ..."
-        groupadd -g $id -p "${encryptedPassword}" "${user}" > /dev/null 2>&1 || xbashio::exit.nok "Group '$user' could not created"
+        groupadd -g $id -p "$encryptedPassword" "$user" > /dev/null 2>&1 || xbashio::exit.nok "Group '$user' could not created"
 
         xbashio::log.trace "Create a new User with ID '$id' ..."
-        useradd -s /bin/bash -u $id -g $id -p "${encryptedPassword}" -m "${user}" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not created"
+        useradd -s /bin/bash -u $id -g $id -p "$encryptedPassword" -m "$user" >/dev/null 2>&1 || xbashio::exit.nok "User '$user' could not created"
 
-        xbashio::security.writeSecurityLog "User '${user}' created with '${password}'"
+        xbashio::security.writeSecurityLog "User '${user}' created with '$password'"
 
         xbashio::log.info "User '$user' and Group created."
     else
@@ -208,7 +208,9 @@ xbashio::security.createPassword() {
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
     xbashio::log.info "Create a random Password"
-    openssl rand -base64 "$length"
+    plain=$(tr -dc A-Za-z0-9 </dev/urandom | head -c "$length" ; echo '')
+
+    echo -e "$plain"
 }
 
 # ------------------------------------------------------------------------------
