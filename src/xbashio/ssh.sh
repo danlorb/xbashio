@@ -25,17 +25,14 @@ xbashio::ssh.createKey() {
 
     file=$(xbashio::ssh.createFileName "$context")
     comment="Generated_for_${context}_from_$(whoami)_on_$(hostname)_at_$(date +'%Y%m%d_%H%M%S')"
-    passphrase="$(xbashio::security.createPassword 64)"
 
     if [ -f "$file" ]; then
         xbashio::log.trace "Remove existing SSH Key File"
         rm -f "$file"
     fi
 
-    ssh-keygen -b "$__XBASHIO_SSH_BITS" -t "$__XBASHIO_SSH_CRYPT" -N "$passphrase" -C "$comment" -f "$file"
+    ssh-keygen -b "$__XBASHIO_SSH_BITS" -t "$__XBASHIO_SSH_CRYPT" -m PEM -N "" -C "$comment" -f "$file"
     mv "$file" "${file}${__XBASHIO_SSH_PRIVATE_KEY_EXT}"
-
-    xbashio::security.writeSecurityLog "Passphrase for Context/Machine '${context}' is '$passphrase'"
 
     xbashio::log.info "SSH key for Context/Machine '$context' created"
 
@@ -72,7 +69,7 @@ xbashio::ssh.installKey() {
     chmod -R 777 "$dest"
 
     xbashio::log.trace "Copy Public Key to authorized Keys ..."
-    cat "$file".pub >> "$dest"/authorized_keys
+    cat "$file".pub > "$dest"/authorized_keys
 
     xbashio::log.trace "Modify Rights for new installed Key ..."
     chmod -R 700 "$dest"
@@ -127,8 +124,8 @@ xbashio::ssh.arm() {
 # Restrict key exchange, cipher, and MAC algorithms, as per sshaudit.com hardening guide.
 KexAlgorithms sntrup761x25519-sha512@openssh.com,curve25519-sha256,curve25519-sha256@libssh.org,gss-curve25519-sha256-,diffie-hellman-group16-sha512,gss-group16-sha512-,diffie-hellman-group18-sha512,diffie-hellman-group-exchange-sha256
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
-MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com
-HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256,rsa-sha2-256-cert-v01@openssh.com
+MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512
+HostKeyAlgorithms ssh-ed25519,ssh-ed25519-cert-v01@openssh.com,sk-ssh-ed25519@openssh.com,sk-ssh-ed25519-cert-v01@openssh.com,rsa-sha2-512,rsa-sha2-512-cert-v01@openssh.com,rsa-sha2-256,rsa-sha2-256-cert-v01@openssh.com,ssh-rsa
 EOF
 
     xbashio::log.info "Configure other ssh settings"
@@ -137,11 +134,11 @@ EOF
     cat >"/etc/ssh/sshd_config.d/hardening.conf" <<EOF
 AuthenticationMethods publickey
 PubkeyAuthentication yes
+PubkeyAcceptedKeyTypes=+ssh-rsa
 PermitRootLogin no
 PermitEmptyPasswords no
 PasswordAuthentication no
 UsePAM no
-RSAAuthentication yes
 StrictModes yes
 LoginGraceTime 30
 MaxAuthTries 6
@@ -172,7 +169,7 @@ xbashio::ssh.defaultConfig() {
     port=$(shuf -i 2000-65000 -n 1)
 
 
-    cat > "/etc/sshd_config"<<EOF
+    cat > "/etc/ssh/sshd_config"<<EOF
 # This is the sshd server system-wide configuration file.  See
 # sshd_config(5) for more information.
 
