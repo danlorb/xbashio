@@ -262,7 +262,7 @@ HostKey /etc/ssh/ssh_host_ed25519_key
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 #PermitTTY yes
-PrintMotd no
+PrintMotd yes
 #PrintLastLog yes
 #TCPKeepAlive yes
 #PermitUserEnvironment no
@@ -291,6 +291,21 @@ Subsystem       sftp    /usr/lib/openssh/sftp-server
 #       AllowTcpForwarding no
 #       PermitTTY no
 #       ForceCommand cvs server
+EOF
+
+    cat > "/etc/motd"<<EOF
+              _                  _  _               _              __  _
+__  __       | |__   _ __   ___ (_)| |_  ___   ___ | |__    __ _  / _|| |_
+\ \/ / _____ | '_ \ | '__| / _ \| || __|/ __| / __|| '_ \  / _`` || |_ | __|
+ >  < |_____|| |_) || |   |  __/| || |_ \__ \| (__ | | | || (_| ||  _|| |_
+/_/\_\       |_.__/ |_|    \___||_| \__||___/ \___||_| |_| \__,_||_|   \__|
+
+      ###############################################################
+      #                 Authorized access only!                     #
+      # Disconnect IMMEDIATELY if you are not an authorized user!!! #
+      #         All actions Will be monitored and recorded          #
+      ###############################################################
+
 EOF
 
     xbashio::log.info "Default ssh config file created"
