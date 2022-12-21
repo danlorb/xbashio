@@ -28,3 +28,12 @@ This will install and configure
 - `nano`
 - `openssl`
 - Creates a `support` User
+
+## Cleanup system after install
+
+To cleanup your System after Install call
+
+```bash
+curl -s https://git.x-breitschaft.de/global/xbashio/raw/branch/main/src/xbashio.scripts/cleanup.sh | bash
+```
+
