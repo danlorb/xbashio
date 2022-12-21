@@ -322,8 +322,8 @@ xbashio::ssh.clean(){
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
     xbashio::log.info "Cleanup SSH Keys"
-    rm -f /root/*.key
-    rm -f /root/*.pub
+    rm -f /root/*.key || true
+    rm -f /root/*.pub || true
 
     xbashio::log.info "SSH Keys deleted"
 }

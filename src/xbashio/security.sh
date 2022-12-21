@@ -316,5 +316,6 @@ xbashio::security.clean(){
 
     xbashio::log.info "Cleanup Security Log"
 
-    rm -f /root/.xbashio_security
+    rm -f /root/.xbashio-security || true
+    rm -f /root/.xbashio_security || true
 }
