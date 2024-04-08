@@ -7,7 +7,7 @@
     // Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {},
-        "ghcr.io/eitsupi/devcontainer-features/jq-likes:1": {},
+        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2.1.0": {},
         "ghcr.io/lukewiwa/features/shellcheck:0": {},
         "ghcr.io/edouard-lopez/devcontainer-features/bats:0": {}
     },
