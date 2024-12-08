@@ -20,3 +20,9 @@ jobs:
 
       - name: Print Environment
         run: printenv
+
+      - name: print github items
+        run: |
+          echo TOKEN = ${{ secrets.GITHUB_TOKEN }}
+          echo TAG_NAME = ${{ github.event.release.tag_name }}
+          echo NAME =${{ github.event.release.name }}
