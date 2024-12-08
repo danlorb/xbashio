@@ -65,10 +65,10 @@ xbashio::string.length() {
 # Returns a substring of a string.
 #
 # stringZ=abcABC123ABCabc
-# hass.string.substring "${stringZ}" 0      # abcABC123ABCabc
-# hass.string.substring "${stringZ}" 1      # bcABC123ABCabc
-# hass.string.substring "${stringZ}" 7      # 23ABCabc
-# hass.string.substring "${stringZ}" 7 3    # 23AB
+# xbashio::string.substring "${stringZ}" 0      # abcABC123ABCabc
+# xbashio::string.substring "${stringZ}" 1      # bcABC123ABCabc
+# xbashio::string.substring "${stringZ}" 7      # 23ABCabc
+# xbashio::string.substring "${stringZ}" 7 3    # 23AB
 #
 # Arguments:
 #   $1 String to return a substring off
