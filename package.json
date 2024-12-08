@@ -1,33 +1,33 @@
 {
-    "name": "xbashio",
-    "version": "1.0.1",
-    "description": "xbash is a bash function library for commonly used operations",
-    "scripts": {
-        "clean": "rimraf ./dist",
-        "version":          "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new release' --dry-run",
-        "version:feature":  "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new feature' --prerelease next",
-        "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
-        "build:makedir": "cross-var make-dir ./dist/$npm_package_name/lib",
-        "build:copy:app": "cross-var cpy ./apps/installer/*.sh ./dist/$npm_package_name",
-        "build:copy:lib": "cross-var cpy ./libs/xbashio/src/* ./dist/$npm_package_name/lib",
-        "package": "npm run build && npm-build-zip --source ./dist/xbashio/ --destination ./dist/ --info=true"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/xbashio/xbashio.git"
-    },
-    "author": "github@danlor.simplelogin.com",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/xbashio/xbashio/issues"
-    },
-    "devDependencies": {
-        "commit-and-tag-version": "^12.5.0",
-        "copy": "^0.3.2",
-        "cpy-cli": "^5.0.0",
-        "cross-var": "^1.1.0",
-        "make-dir-cli": "^4.0.0",
-        "npm-build-zip": "^1.0.4",
-        "rimraf": "^6.0.1"
-    }
+  "name": "xbashio",
+  "version": "1.0.1",
+  "description": "xbash is a bash function library for commonly used operations",
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "version": "commit-and-tag-version --no-verify --releaseCommitMessageFormat '[skip ci] new release' --dry-run",
+    "version:next": "commit-and-tag-version --no-verify --releaseCommitMessageFormat '[skip ci] new feature' --prerelease next",
+    "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
+    "build:makedir": "cross-var make-dir ./dist/$npm_package_name/lib",
+    "build:copy:app": "cross-var cpy ./apps/installer/*.sh ./dist/$npm_package_name",
+    "build:copy:lib": "cross-var cpy ./libs/xbashio/src/* ./dist/$npm_package_name/lib",
+    "package": "npm run build && npm-build-zip --source ./dist/xbashio/ --destination ./dist/ --info=true"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xbashio/xbashio.git"
+  },
+  "author": "github@danlor.simplelogin.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xbashio/xbashio/issues"
+  },
+  "devDependencies": {
+    "commit-and-tag-version": "^12.5.0",
+    "copy": "^0.3.2",
+    "cpy-cli": "^5.0.0",
+    "cross-var": "^1.1.0",
+    "make-dir-cli": "^4.0.0",
+    "npm-build-zip": "^1.0.4",
+    "rimraf": "^6.0.1"
+  }
 }
