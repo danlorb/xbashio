@@ -3,7 +3,7 @@
     "version": "1.0.1",
     "description": "xbash is a bash function library for commonly used operations",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "release": "commit-and-tag-version --dry-run"
     },
     "repository": {
         "type": "git",
