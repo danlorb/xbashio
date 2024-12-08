@@ -1,0 +1,15 @@
+{
+    "name": "xbashio",
+    "version": "1.0.1",
+    "description": "xbash is a bash function library for commonly used operations",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/home-assistant/xbashio.git"
+    },
+    "author": "",
+    "license": "MIT",
+}

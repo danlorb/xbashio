@@ -1,0 +1,22 @@
+# Copyright (c) 2024 Roland Breitschaft
+#
+# This software is released under the MIT License.
+# https://opensource.org/licenses/MIT
+
+
+name: Print environment
+
+on:
+  push:
+    branches:
+      - feature-*
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Publish release
+        run: printenv

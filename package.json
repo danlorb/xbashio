@@ -1,0 +1,20 @@
+{
+    "name": "xbashio",
+    "version": "1.0.1",
+    "description": "xbash is a bash function library for commonly used operations",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/xbashio/xbashio.git"
+    },
+    "author": "github@danlor.simplelogin.com",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/xbashio/xbashio/issues"
+    },
+    "devDependencies": {
+        "commit-and-tag-version": "^12.5.0"
+    }
+}
