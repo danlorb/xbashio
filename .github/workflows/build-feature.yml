@@ -1,14 +1,13 @@
-name: create new release
+name: build feature
 on:
   push:
-    tags:
-      - "*"
+    branches:
+      - feature-*
+
 jobs:
-  release:
-    name: create release job
+  feature:
+    name: build feature job
     runs-on: ubuntu-latest
-    env:
-      IS_PRERELEASE: ${{ contains(github.event.release.tag_name, 'next') }}
     steps:
       - name: checkout code
         uses: actions/checkout@v2
@@ -22,38 +21,31 @@ jobs:
         run: npm install
 
       - name: create prelease
-        if: ${{ env.IS_PRERELEASE == true }}
-        run: npm run prerelease
-
-      - name: create prelease
-        if: ${{ env.IS_PRERELEASE == false }}
-        run: npm run release
+        run: npm run version:next
 
       - name: publish xbashio
-        run: npm run publish
-
-      - name: publish xbashio
-        run: npm run publish
+        run: npm run package
 
       - name: create release for gitea
         if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL != 'https://github.com'}}
         uses: akkuman/gitea-release-action@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.event.release.tag_name }}
+          release_name: ${{ github.ref }}
           body_path: ./CHANGELOG.md
           draft: false
-          prerelease: ${{ env.IS_PRERELEASE }}
+          prerelease: true
+          files: ./dist/*.zip
 
       - name: create release for github
-        if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL == 'https://github.com'}}
+        if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL == 'https://github.com1'}}
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ github.event.release.tag_name }}
+          release_name: ${{ github.ref }}
           body_path: ./CHANGELOG.md
           draft: false
-          prerelease: ${{ env.IS_PRERELEASE }}
+          prerelease: true
 

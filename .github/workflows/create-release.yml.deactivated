@@ -1,0 +1,56 @@
+name: create new release
+on:
+  push:
+    tags:
+      - "v*"
+jobs:
+  release:
+    name: create release job
+    runs-on: ubuntu-latest
+    env:
+      IS_PRERELEASE: ${{ contains(github.event.release.tag_name, 'next') }}
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: setup node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: install dependencies
+        run: npm install
+
+      - name: create prelease
+        if: ${{ env.IS_PRERELEASE == true }}
+        run: npm run version:pre
+
+      - name: create release
+        if: ${{ env.IS_PRERELEASE == false }}
+        run: npm run version
+
+      - name: publish xbashio
+        run: npm run package
+
+      - name: create release for gitea
+        if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL != 'https://github.com'}}
+        uses: akkuman/gitea-release-action@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body_path: ./CHANGELOG.md
+          draft: false
+          prerelease: ${{ env.IS_PRERELEASE }}
+
+      - name: create release for github
+        if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL == 'https://github.com'}}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body_path: ./CHANGELOG.md
+          draft: false
+          prerelease: ${{ env.IS_PRERELEASE }}
+
