@@ -30,22 +30,17 @@
                 "mads-hartmann.bash-ide-vscode",
                 "bat-snippets.bat-snippets",
                 "jetmartin.bats",
-                "aaron-bond.better-comments",
                 "xiaokangtu.codeheader",
                 "EditorConfig.EditorConfig",
                 "MS-CEINTL.vscode-language-pack-de",
                 "pomber.git-file-history",
                 "mhutchie.git-graph",
-                "RLNT.keep-a-changelog",
                 "ymotongpoo.licenser",
                 "DavidAnson.vscode-markdownlint",
-                "IBM.output-colorizer",
-                "christian-kohler.path-intellisense",
                 "rpinski.shebang-snippets",
                 "foxundermoon.shell-format",
                 "timonwong.shellcheck",
-                "Remisa.shellman",
-                "emmanuelbeziat.vscode-great-icons"
+                "Remisa.shellman"
             ]
         }
     },
