@@ -24,6 +24,14 @@ let plugins = [
       npmPublish: false,
     },
   ],
+  [
+    "@semantic-release/git",
+    {
+      assets: ["package.json"],
+      message:
+        "chore(release): ${nextRelease.version} [skip ci] [skip release]\n\n${nextRelease.notes}",
+    },
+  ],
 ];
 
 if (!process.env.NPM_TOKEN) {
@@ -31,7 +39,7 @@ if (!process.env.NPM_TOKEN) {
   process.env.NPM_TOKEN = "adummytoken";
 }
 
-if (process.env.GITHUB_TOKEN) {
+if (process.env.CI === "true") {
   if (process.env.GITHUB_SERVER_URL === "https://github.com") {
     plugins = [
       ...plugins,
@@ -67,6 +75,6 @@ module.exports = {
       prerelease: "next",
     },
   ],
-  ci: true,
+  ci: process.env.CI === "true",
   plugins: [...plugins],
 };
