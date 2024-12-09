@@ -7,12 +7,18 @@
         {
             "type": "bashdb",
             "request": "launch",
-            "name": "Debug",
+            "name": "Debug bash",
             "cwd": "${workspaceFolder}",
             "program": "src/xbashio/xbashio",
             "args": [
                 "${file}"
             ]
+        },
+        {
+            "name": "Debug javascript",
+            "program": "${file}",
+            "request": "launch",
+            "type": "node"
         }
     ]
 }

@@ -5,8 +5,6 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "version": "semantic-release",
-    "version:next": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new feature' --prerelease next --release-as minor",
-    "version:test": "commit-and-tag-version",
     "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
     "build:makedir": "cross-var make-dir ./dist/$npm_package_name/lib",
     "build:copy:app": "cross-var cpy ./apps/installer/*.sh ./dist/$npm_package_name",
@@ -24,13 +22,11 @@
   },
   "devDependencies": {
     "@saithodev/semantic-release-gitea": "^2.1.0",
-    "copy": "^0.3.2",
     "cpy-cli": "^5.0.0",
     "cross-var": "^1.1.0",
     "make-dir-cli": "^4.0.0",
     "npm-build-zip": "^1.0.4",
     "rimraf": "^6.0.1",
-    "semantic-release": "^24.2.0",
-    "semantic-release-mirror-version": "^1.1.2"
+    "semantic-release": "^24.2.0"
   }
 }
