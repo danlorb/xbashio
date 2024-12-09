@@ -54,6 +54,12 @@ jobs:
           git pull
           git push --follow-tags origin ${{ github.ref }}
 
+      - name: retrieve tag name
+        run: |
+          echo "SOURCE_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          echo "SOURCE_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "SOURCE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
       - name: create xbashio package
         run: npm run package
 
@@ -61,7 +67,7 @@ jobs:
         if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL != 'https://github.com' }}
         uses: akkuman/gitea-release-action@v1
         with:
-          tag_name: ${{ github.event.release.tag_name }}
+          tag_name: ${{ env.SOURCE_TAG }}
           release_name: ${{ github.ref }}
           body_path: ./CHANGELOG.md
           draft: false
