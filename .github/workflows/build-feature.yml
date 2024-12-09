@@ -24,16 +24,16 @@ jobs:
       - name: install dependencies
         run: npm install
 
+      - name: configure git
+        run: |
+          git config --global user.email "github@action.com"
+          git config --global user.name "Github Action"
+
       - name: create prelease
         run: npm run version:next
 
       - name: publish xbashio
         run: npm run package
-
-      - name: configure git
-        run: |
-          git config --global user.email "github@action.com"
-          git config --global user.name "Github Action"
 
       - name: create release for gitea
         if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL != 'https://github.com' }}
