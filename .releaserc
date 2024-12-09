@@ -1,0 +1,13 @@
+
+branches:
+  - name: main
+    channel: stable
+  - name: next
+    channel: next
+    prerelease: next
+ci: false
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+#   - "@semantic-release/npm"
+#   - "@semantic-release/git"

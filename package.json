@@ -1,11 +1,12 @@
 {
   "name": "xbashio",
-  "version": "1.1.0-next.0",
+  "version": "1.0.1",
   "description": "xbash is a bash function library for commonly used operations",
   "scripts": {
     "clean": "rimraf ./dist",
     "version": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new release'",
     "version:next": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new feature' --prerelease next --release-as minor",
+    "version:test": "commit-and-tag-version",
     "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
     "build:makedir": "cross-var make-dir ./dist/$npm_package_name/lib",
     "build:copy:app": "cross-var cpy ./apps/installer/*.sh ./dist/$npm_package_name",
@@ -14,12 +15,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xbashio/xbashio.git"
+    "url": "git+https://git.x-breitschaft.de/global/xbashio.git"
   },
   "author": "github@danlor.simplelogin.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xbashio/xbashio/issues"
+    "url": "https://git.x-breitschaft.de/global/xbashio/issues"
   },
   "devDependencies": {
     "commit-and-tag-version": "^12.5.0",
@@ -29,6 +30,8 @@
     "cross-var": "^1.1.0",
     "make-dir-cli": "^4.0.0",
     "npm-build-zip": "^1.0.4",
-    "rimraf": "^6.0.1"
+    "replace": "^1.2.2",
+    "rimraf": "^6.0.1",
+    "semantic-release": "^24.2.0"
   }
 }
