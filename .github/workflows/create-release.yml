@@ -2,7 +2,7 @@ name: create new release
 on:
   push:
     tags:
-      - "v*"
+      - 'v*'
 jobs:
   release:
     name: create release job
@@ -46,7 +46,7 @@ jobs:
       - name: install dependencies
         if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
         run: npm install
-        
+
       - name: create xbashio package
         run: npm run package
 
