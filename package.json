@@ -4,7 +4,7 @@
   "description": "xbash is a bash function library for commonly used operations",
   "scripts": {
     "clean": "rimraf ./dist",
-    "version": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new release' --dry-run",
+    "version": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new release'",
     "version:next": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new feature' --prerelease next --release-as minor",
     "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
     "build:makedir": "cross-var make-dir ./dist/$npm_package_name/lib",
@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "commit-and-tag-version": "^12.5.0",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
     "copy": "^0.3.2",
     "cpy-cli": "^5.0.0",
     "cross-var": "^1.1.0",
