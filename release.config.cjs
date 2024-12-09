@@ -3,7 +3,9 @@
  */
 
 // define here all assets which should included in a release
-const assets = ["dist/xbashio/*.zip"];
+const assets = [
+  { path: "dist/xbashio.zip", label: "xbashio-${nextRelease.version}.zip" },
+];
 
 let plugins = [
   [
@@ -46,7 +48,7 @@ if (process.env.CI === "true") {
       [
         "@semantic-release/github",
         {
-          assets: [assets],
+          assets: [...assets],
         },
       ],
     ];
@@ -56,7 +58,7 @@ if (process.env.CI === "true") {
       [
         "@saithodev/semantic-release-gitea",
         {
-          assets: [assets],
+          assets: [...assets],
         },
       ],
     ];
