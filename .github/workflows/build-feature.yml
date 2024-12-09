@@ -52,7 +52,7 @@ jobs:
         run: |
           git fetch --prune
           git pull
-          git push --follow-tags origin ${{ github.ref }}
+          git push --force --follow-tags origin ${{ github.ref }}
 
       - name: retrieve tag name
         run: |
