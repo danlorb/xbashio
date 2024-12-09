@@ -1,0 +1,31 @@
+name: test workflow
+on:
+  push:
+    branches:
+      - feature-*
+
+jobs:
+  test-workflow:
+    name: test job
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: set env vars
+        run: |
+          echo "GITHUB_SERVER_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
+          echo "IMAGE_OS=$IMAGE_OS" >> $GITHUB_ENV
+
+      - name: print condition
+        run: |
+          echo "${{ env.GITHUB_SERVER_URL }}"
+          echo "${{ env.IMAGE_OS }}"
+          echo "${{ env.ImageOs }}"
+          echo "${{ hashFiles('LICENSE') }}"
+          echo "${{ env.SHOULD_RUN }}"
+
+      - name: test envrionment if
+        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com1' && env.IMAGE_OS == 'ubuntu22' }}
+        run: echo "GITHUB_SERVER_URL is set to $GITHUB_SERVER_URL"
+
