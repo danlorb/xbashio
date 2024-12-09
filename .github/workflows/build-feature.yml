@@ -20,6 +20,7 @@ jobs:
       - name: set env vars from envrionment
         run: |
           echo "GITHUB_SERVER_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
+          echo "GITEA_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
 
       - name: configure git
         run: |
@@ -50,7 +51,7 @@ jobs:
 
       - name: create release
         env:
-          GITEA_TOKEN: ${{ GITHUB_TOKEN }}
+          GITEA_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run version
 

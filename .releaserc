@@ -25,7 +25,6 @@
     [
       "@saithodev/semantic-release-gitea",
       {
-        "giteaUrl": "https://git.x-breitschaft.de",
         "assets": [
           {
             "path": "dist/**/*.zip",
