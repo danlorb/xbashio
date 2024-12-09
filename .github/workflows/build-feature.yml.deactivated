@@ -1,0 +1,93 @@
+name: build feature
+on:
+  push:
+    branches:
+      - feature-*
+  pull_request:
+    branches:
+      - feature-*
+
+jobs:
+  feature:
+    name: build feature job
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_TOOL_CACHE: /toolcache
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: set env vars from envrionment
+        run: |
+          echo "GITHUB_SERVER_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
+
+      - name: configure git
+        run: |
+          git config --global user.email "github@action.com"
+          git config --global user.name "Github Action"
+
+      - name: setup node.js
+        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: cache node modules
+        id: npm-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |-
+            npm-cache-${{ hashFiles('**/package-lock.json') }}
+
+      - name: install dependencies
+        if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+        run: npm install
+
+      - name: create prelease
+        run: npm run version:next
+
+      - name: push prerelease
+        run: |
+          git fetch --prune
+          git pull
+          git push --force --follow-tags origin ${{ github.ref }}
+
+      - name: retrieve tag name
+        run: |
+          echo "SOURCE_NAME=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+          echo "SOURCE_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "SOURCE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: create xbashio package
+        run: npm run package
+
+      - name: create release for gitea
+        if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL != 'https://github.com' }}
+        uses: akkuman/gitea-release-action@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref }}
+          body_path: ./CHANGELOG.md
+          draft: false
+          prerelease: true
+          files: |-
+            dist/xbashio/*.zip
+
+      - name: create release for github
+        if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL == 'https://github.com' }}
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref }}
+          body_path: ./CHANGELOG.md
+          draft: false
+          prerelease: true
+          files: |-
+            dist/xbashio/*.zip
+
+
+
