@@ -4,7 +4,7 @@
   "description": "xbash is a bash function library for commonly used operations",
   "scripts": {
     "clean": "rimraf ./dist",
-    "version": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new release'",
+    "version": "semantic-release",
     "version:next": "commit-and-tag-version --no-verify --releaseCommitMessageFormat 'new feature' --prerelease next --release-as minor",
     "version:test": "commit-and-tag-version",
     "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
@@ -23,6 +23,7 @@
     "url": "https://git.x-breitschaft.de/global/xbashio/issues"
   },
   "devDependencies": {
+    "@saithodev/semantic-release-gitea": "^2.1.0",
     "commit-and-tag-version": "^12.5.0",
     "conventional-changelog-conventionalcommits": "^8.0.0",
     "copy": "^0.3.2",
@@ -32,6 +33,7 @@
     "npm-build-zip": "^1.0.4",
     "replace": "^1.2.2",
     "rimraf": "^6.0.1",
-    "semantic-release": "^24.2.0"
+    "semantic-release": "^24.2.0",
+    "semantic-release-mirror-version": "^1.1.2"
   }
 }

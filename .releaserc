@@ -9,5 +9,17 @@ ci: false
 plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
+  - "semantic-release-mirror-version":
+      fileGlob:
+        - "/**/package.json"
+  # - "@semantic-release/github":
+  #     assets:
+  #       - path: "dist/**/*.zip"
+  #         label: "Application"
+  - "@saithodev/semantic-release-gitea":
+      giteaUrl: "https://git.x-breitschaft.de"
+      assets:
+        - path: "dist/**/*.zip"
+          label: "Application"
 #   - "@semantic-release/npm"
 #   - "@semantic-release/git"
