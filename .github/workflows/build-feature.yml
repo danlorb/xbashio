@@ -45,7 +45,10 @@ jobs:
         if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
         run: npm install
 
-      - name: create prelease
+      - name: build xbashio package
+        run: npm run package
+
+      - name: create release
         run: npm run version
 
       # - name: push prerelease
@@ -60,8 +63,7 @@ jobs:
       #     echo "SOURCE_BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
       #     echo "SOURCE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
 
-      - name: create xbashio package
-        run: npm run package
+
 
       # - name: create release for gitea
       #   if: ${{ hashFiles('CHANGELOG.md') != '' && env.GITHUB_SERVER_URL != 'https://github.com' }}
