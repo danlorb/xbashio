@@ -54,5 +54,5 @@ jobs:
         env:
           GITEA_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run version
+          npm run release
 

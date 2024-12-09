@@ -4,7 +4,7 @@
   "description": "xbash is a bash function library for commonly used operations",
   "scripts": {
     "clean": "rimraf ./dist",
-    "version": "semantic-release",
+    "release": "semantic-release",
     "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
     "build:makedir": "cross-var make-dir ./dist/$npm_package_name/lib",
     "build:copy:app": "cross-var cpy ./apps/installer/*.sh ./dist/$npm_package_name",
