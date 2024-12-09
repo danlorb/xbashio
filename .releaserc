@@ -15,14 +15,6 @@
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     [
-      "semantic-release-mirror-version",
-      {
-        "fileGlob": [
-          "**/package.json"
-        ]
-      }
-    ],
-    [
       "@saithodev/semantic-release-gitea",
       {
         "assets": [
