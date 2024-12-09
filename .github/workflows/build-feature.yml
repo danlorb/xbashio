@@ -11,6 +11,8 @@ jobs:
   feature:
     name: build feature job
     runs-on: ubuntu-latest
+    env:
+      RUNNER_TOOL_CACHE: /toolcache
     steps:
       - name: checkout code
         uses: actions/checkout@v2
