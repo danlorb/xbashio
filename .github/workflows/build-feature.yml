@@ -15,22 +15,44 @@ jobs:
       - name: print env vars
         run: printenv
 
+      - name: configure git
+        run: |
+          git config --global user.email "github@action.com"
+          git config --global user.name "Github Action"
+
       - name: setup node.js
         if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
         uses: actions/setup-node@v2
         with:
           node-version: '20'
 
+      - name: Cache node modules
+        id: cache-npm
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-node-modules
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+
+      - name: List the state of node modules
+        if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: npm list
+
       - name: install dependencies
         run: npm install
 
-      - name: configure git
-        run: |
-          git config --global user.email "github@action.com"
-          git config --global user.name "Github Action"
-
       - name: create prelease
         run: npm run version:next
+
+      - name: push prerelease
+        run: git push --follow-tags origin feature-extended-bashio
 
       - name: publish xbashio
         run: npm run package
