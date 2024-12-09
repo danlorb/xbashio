@@ -51,7 +51,9 @@ jobs:
       - name: create release
         env:
           GITEA_TOKEN: ${{ GITEA_TOKEN }}
-        run: npm run version
+        run: |
+          sleep 300
+          npm run version
 
       # - name: push prerelease
       #   run: |
