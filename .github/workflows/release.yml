@@ -43,7 +43,7 @@ jobs:
         run: npm install
 
       - name: build xbashio package
-        run: npm run package
+        run: npm run build
 
       - name: create release
         env:
