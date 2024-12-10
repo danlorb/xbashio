@@ -77,6 +77,6 @@ module.exports = {
       prerelease: "next",
     },
   ],
-  ci: process.env.CI === "true",
+  ci: false,
   plugins: [...plugins],
 };
