@@ -30,10 +30,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: remove package-lock.json on github
-        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
-        run: rm -f package-lock.json
-
       - name: cache node modules
         id: npm-cache
         uses: actions/cache@v3
@@ -44,7 +40,13 @@ jobs:
             npm-cache-${{ hashFiles('**/package-lock.json') }}
 
       - name: install dependencies
-        run: npm install
+        run: |
+          rm -f package-lock.json
+          npm install
+
+      - name: execute fix for github
+        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
+        run: npm run github:fix
 
       - name: build xbashio package
         run: npm run package
