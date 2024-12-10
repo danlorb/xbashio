@@ -54,6 +54,7 @@ jobs:
       - name: create release
         env:
           GITEA_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           npm run release
 
