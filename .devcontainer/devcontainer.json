@@ -3,13 +3,19 @@
 {
     "name": "xBashIO",
     // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-    "image": "mcr.microsoft.com/devcontainers/base:jammy",
+    "image": "registry.x-breitschaft.de/devcontainers/base:ubuntu",
     // Features to add to the dev container. More info: https://containers.dev/features.
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2": {},
-        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2.1.0": {},
+        "ghcr.io/eitsupi/devcontainer-features/jq-likes:2.1.1": {},
         "ghcr.io/lukewiwa/features/shellcheck:0": {},
         "ghcr.io/edouard-lopez/devcontainer-features/bats:0": {}
+    },
+    "runArgs": [
+        "--unserns=keep-id"
+    ],
+    "containerEnv": {
+        "HOME": "/root"
     },
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [],
@@ -24,22 +30,17 @@
                 "mads-hartmann.bash-ide-vscode",
                 "bat-snippets.bat-snippets",
                 "jetmartin.bats",
-                "aaron-bond.better-comments",
                 "xiaokangtu.codeheader",
                 "EditorConfig.EditorConfig",
                 "MS-CEINTL.vscode-language-pack-de",
                 "pomber.git-file-history",
                 "mhutchie.git-graph",
-                "RLNT.keep-a-changelog",
                 "ymotongpoo.licenser",
                 "DavidAnson.vscode-markdownlint",
-                "IBM.output-colorizer",
-                "christian-kohler.path-intellisense",
                 "rpinski.shebang-snippets",
                 "foxundermoon.shell-format",
                 "timonwong.shellcheck",
-                "Remisa.shellman",
-                "emmanuelbeziat.vscode-great-icons"
+                "Remisa.shellman"
             ]
         }
     },

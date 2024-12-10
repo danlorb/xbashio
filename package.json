@@ -1,0 +1,35 @@
+{
+  "name": "xbashio",
+  "version": "1.0.0-next.1",
+  "description": "xbash is a bash function library for commonly used operations",
+  "scripts": {
+    "clean": "npm run clean:all",
+    "clean:all": "rimraf ./dist",
+    "clean:build": "rimraf ./dist/xbashio",
+    "release": "semantic-release",
+    "build": "npm run clean && npm run build:makedir && npm run build:copy:app && npm run build:copy:lib",
+    "build:makedir": "make-dir ./dist/xbashio/lib",
+    "build:copy:app": "cpy ./apps/installer/*.sh ./dist/xbashio",
+    "build:copy:lib": "cpy ./libs/xbashio/src/* ./dist/xbashio/lib",
+    "package": "npm run build && npm-build-zip --source ./dist/xbashio/ --destination ./dist/ --name=xbashio --name_only=true && npm run clean:build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://git.x-breitschaft.de/global/xbashio.git"
+  },
+  "author": "github@danlor.simplelogin.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://git.x-breitschaft.de/global/xbashio/issues"
+  },
+  "devDependencies": {
+    "@saithodev/semantic-release-gitea": "^2.1.0",
+    "@semantic-release/git": "^10.0.1",
+    "conventional-changelog-conventionalcommits": "^8.0.0",
+    "cpy-cli": "^5.0.0",
+    "make-dir-cli": "^4.0.0",
+    "npm-build-zip": "^1.0.4",
+    "rimraf": "^6.0.1",
+    "semantic-release": "^24.2.0"
+  }
+}

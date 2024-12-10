@@ -3,7 +3,7 @@
 # -*- coding: utf-8 -*-
 
 # Update System Cache
-# xbashio::apt.update
+xbashio::apt.update
 
 # Update System
 # xbashio::apt.upgrade

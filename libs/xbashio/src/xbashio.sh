@@ -11,7 +11,7 @@ set -o pipefail # Return exit status of the last command in the pipe that failed
 # ==============================================================================
 
 # xBashIO version number
-readonly XBASHIO_VERSION="0.1.0"
+readonly XBASHIO_VERSION="1.0.1"
 
 # Stores the location of this library
 readonly __XBASHIO_LIB_DIR=$(dirname "${BASH_SOURCE[0]}")
@@ -24,6 +24,7 @@ declare __XBASHIO_LOG_LEVEL=${LOG_LEVEL:-${__XBASHIO_DEFAULT_LOG_LEVEL}}
 declare __XBASHIO_LOG_FORMAT=${LOG_FORMAT:-${__XBASHIO_DEFAULT_LOG_FORMAT}}
 declare __XBASHIO_LOG_TIMESTAMP=${LOG_TIMESTAMP:-${__XBASHIO_DEFAULT_LOG_TIMESTAMP}}
 declare __XBASHIO_CACHE_DIR=${CACHE_DIR:-${__XBASHIO_DEFAULT_CACHE_DIR}}
+declare __XBASHIO_MODULE_DIR=${MODULE_DIR:-${__XBASHIO_DEFAULT_CACHE_DIR}}
 
 # ==============================================================================
 # Main Modules
@@ -50,3 +51,14 @@ source "${__XBASHIO_LIB_DIR}/apt.sh"
 source "${__XBASHIO_LIB_DIR}/security.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/ssh.sh
 source "${__XBASHIO_LIB_DIR}/ssh.sh"
+
+# ==============================================================================
+# Extended Modules
+# ==============================================================================
+modules="${__XBASHIO_LIB_DIR}/modules"
+if [ -d "${modules}" ]; then
+    for file in "${modules}"/*.sh; do
+        chmod +x "${file}"
+        source "${file}"
+    done
+fi

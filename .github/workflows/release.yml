@@ -1,0 +1,53 @@
+name: create release
+on:
+  push:
+    branches:
+      - next
+      - main
+  pull_request:
+    branches:
+      - next
+      - main
+
+jobs:
+  feature:
+    name: create release job
+    runs-on: ubuntu-latest
+    env:
+      RUNNER_TOOL_CACHE: /toolcache
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+
+      - name: copy env vars to action
+        run: |
+          echo "GITHUB_SERVER_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
+          echo "GITEA_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
+
+      - name: setup node.js
+        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: cache node modules
+        id: npm-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-cache-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |-
+            npm-cache-${{ hashFiles('**/package-lock.json') }}
+
+      - name: install dependencies
+        run: npm install
+
+      - name: build xbashio package
+        run: npm run package
+
+      - name: create release
+        env:
+          GITEA_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm run release
+
