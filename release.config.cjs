@@ -4,7 +4,7 @@
 
 // define here all assets which should included in a release
 const assets = [
-  { path: "dist/xbashio/**/*", name: "xbashio-${nextRelease.version}.zip" },
+  { path: "dist/xbashio.zip", name: "xbashio-${nextRelease.version}.zip" },
 ];
 
 let plugins = [
