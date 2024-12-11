@@ -24,14 +24,7 @@ jobs:
           echo "GITHUB_SERVER_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
           echo "GITEA_URL=$GITHUB_SERVER_URL" >> $GITHUB_ENV
 
-      - name: setup node.js on github
-        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
       - name: cache node modules
-        id: npm-cache
         uses: actions/cache@v3
         with:
           path: ~/.npm
@@ -44,10 +37,6 @@ jobs:
           rm -f package-lock.json
           npm install
 
-      - name: execute fix for github
-        if: ${{ env.GITHUB_SERVER_URL == 'https://github.com' }}
-        run: npm run github:fix
-
       - name: build xbashio package
         run: npm run package
 
@@ -56,5 +45,5 @@ jobs:
           GITEA_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm run release
+          npx semantic-release
 
