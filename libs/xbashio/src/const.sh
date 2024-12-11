@@ -4,6 +4,7 @@
 
 # Defaults
 readonly __XBASHIO_DEFAULT_CACHE_DIR="/tmp/.xbashio"
+readonly __XBASHIO_DEFAULT_ETC_DIR="/etc/xbashio"
 readonly __XBASHIO_DEFAULT_LOG_FORMAT="[{TIMESTAMP}] {LEVEL}: {MESSAGE}"
 readonly __XBASHIO_DEFAULT_LOG_LEVEL=5 # Defaults to INFO
 readonly __XBASHIO_DEFAULT_LOG_TIMESTAMP="%T"

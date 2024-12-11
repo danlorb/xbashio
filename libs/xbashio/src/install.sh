@@ -11,7 +11,7 @@ fi
 mkdir -p /usr/lib/xbashio
 
 # install files
-mv -f ./lib/* /usr/lib/xbashio
+mv -f ./* /usr/lib/xbashio
 chmod 755 /usr/lib/xbashio/*
 ln -s /usr/lib/xbashio/xbashio /usr/bin/xbashio
 chmod 755 /usr/bin/xbashio
