@@ -319,3 +319,11 @@ xbashio::security.clean(){
     rm -f /root/.xbashio-security || true
     rm -f /root/.xbashio_security || true
 }
+
+xbashio::security.updateCA(){
+
+    xbashio::log.trace "${FUNCNAME[0]}:"
+
+    xbashio::log.info "Update Certificates"
+    update-ca-certificates
+}
