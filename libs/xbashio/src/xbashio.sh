@@ -25,6 +25,15 @@ declare __XBASHIO_LOG_FORMAT=${LOG_FORMAT:-${__XBASHIO_DEFAULT_LOG_FORMAT}}
 declare __XBASHIO_LOG_TIMESTAMP=${LOG_TIMESTAMP:-${__XBASHIO_DEFAULT_LOG_TIMESTAMP}}
 declare __XBASHIO_CACHE_DIR=${CACHE_DIR:-${__XBASHIO_DEFAULT_CACHE_DIR}}
 declare __XBASHIO_MODULE_DIR=${MODULE_DIR:-${__XBASHIO_DEFAULT_CACHE_DIR}}
+declare __XBASHIO_ETC_DIR=${ETC_DIR:-${__XBASHIO_DEFAULT_ETC_DIR}}
+
+# ==============================================================================
+# Create folders
+# ==============================================================================
+mkdir -p "${__XBASHIO_CACHE_DIR}"
+mkdir -p "${__XBASHIO_ETC_DIR}"
+chown -R root:root "${__XBASHIO_ETC_DIR}"
+chmod -R 755 "${__XBASHIO_ETC_DIR}"
 
 # ==============================================================================
 # Main Modules
@@ -51,6 +60,8 @@ source "${__XBASHIO_LIB_DIR}/apt.sh"
 source "${__XBASHIO_LIB_DIR}/security.sh"
 # shellcheck source=/workspaces/xbashio/src/xbashio/ssh.sh
 source "${__XBASHIO_LIB_DIR}/ssh.sh"
+# shellcheck source=/workspaces/xbashio/src/xbashio/env.sh
+source "${__XBASHIO_LIB_DIR}/env.sh"
 
 # ==============================================================================
 # Extended Modules
