@@ -9,8 +9,10 @@ xbashio::apt.update() {
 
     xbashio::log.trace "${FUNCNAME[0]}:"
 
-    xbashio::log.info "Update Package Cache"
-    apt update || xbashio::exit.nok "Package Cache could not updated"
+    export DEBIAN_FRONTEND=noninteractive
+
+    xbashio::log.info "Update package cache"
+    apt-get update || xbashio::exit.nok "Package cache could not updated"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -22,12 +24,12 @@ xbashio::apt.upgrade() {
 
     xbashio::log.trace "${FUNCNAME[0]}:"
 
-    xbashio::log.info "Upgrade System"
+    xbashio::log.info "Upgrade system"
 
     export DEBIAN_FRONTEND=noninteractive
 
     xbashio::apt.update
-    apt upgrade -qy --no-install-recommends || xbashio::exit.nok "System could not upgraded"
+    apt-get upgrade -qy --no-install-recommends || xbashio::exit.nok "System could not upgraded"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -42,12 +44,12 @@ xbashio::apt.install() {
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
-    xbashio::log.info "Install Package '${packages}' System"
+    xbashio::log.info "Install package '${packages}' on system"
 
     export DEBIAN_FRONTEND=noninteractive
 
     # shellcheck disable=SC2086
-    apt install -qy --no-install-recommends ${packages}  || xbashio::exit.nok "Packages '$packages' could not installed"
+    apt-get install -qy --no-install-recommends ${packages}  || xbashio::exit.nok "Packages '$packages' could not installed"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -62,12 +64,12 @@ xbashio::apt.remove() {
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
-    xbashio::log.info "Remove Package '${packages}' System"
+    xbashio::log.info "Remove package '${packages}' on system"
 
     export DEBIAN_FRONTEND=noninteractive
 
     # shellcheck disable=SC2086
-    apt purge -qy --no-install-recommends ${packages} || xbashio::exit.nok "Packages 'packages' could not removed"
+    apt-get purge -qy --no-install-recommends ${packages} || xbashio::exit.nok "Packages 'packages' could not removed"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -80,14 +82,14 @@ xbashio::apt.prepare() {
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
-    xbashio::log.info "Install minimum Packages '${packages}' on System"
+    xbashio::log.info "Install minimum packages '${packages}' on system"
 
     export DEBIAN_FRONTEND=noninteractive
 
     xbashio::apt.upgrade
 
     # shellcheck disable=SC2086
-    apt install -qy --no-install-recommends ${packages} || xbashio::exit.nok "System could not prepared"
+    apt-get install -qy --no-install-recommends ${packages} || xbashio::exit.nok "System could not prepared"
     return "${__XBASHIO_EXIT_OK}"
 }
 
@@ -99,13 +101,15 @@ xbashio::apt.clean() {
 
     xbashio::log.trace "${FUNCNAME[0]}:" "$@"
 
-    xbashio::log.info "Cleanup the System"
+    xbashio::log.info "Cleanup system"
 
     export DEBIAN_FRONTEND=noninteractive
 
-    (apt clean \
+    (apt-get clean \
+        && apt-get autoremove \
         && rm -rf \
             /var/lib/apt/lists/* \
+            /var/cache/apt/archives/partial/* \
             /root/.cache) \
          || xbashio::exit.nok "System could not cleaned"
 

@@ -42,27 +42,15 @@ if (!process.env.NPM_TOKEN) {
 }
 
 if (process.env.CI === "true") {
-  if (process.env.GITHUB_SERVER_URL === "https://github.com") {
-    plugins = [
-      ...plugins,
-      [
-        "@semantic-release/github",
-        {
-          assets: [...assets],
-        },
-      ],
-    ];
-  } else {
-    plugins = [
-      ...plugins,
-      [
-        "@saithodev/semantic-release-gitea",
-        {
-          assets: [...assets],
-        },
-      ],
-    ];
-  }
+  plugins = [
+    ...plugins,
+    [
+      "@saithodev/semantic-release-gitea",
+      {
+        assets: [...assets],
+      },
+    ],
+  ];
 }
 
 module.exports = {
@@ -77,6 +65,6 @@ module.exports = {
       prerelease: "next",
     },
   ],
-  ci: false,
+  ci: true,
   plugins: [...plugins],
 };
